@@ -7,15 +7,15 @@
     <style>
         body {
             background-color: rgb(47, 21, 120);
-            color: gold; /* Set text color to white */
+            color: gold;
         }
 
         input {
-            background-color: white; /* Default background color for input fields */
+            background-color: white;
         }
 
         .orange-background {
-            background-color: orange; /* CSS class for setting background color to orange */
+            background-color: orange;
         }
     </style>
 
@@ -454,8 +454,10 @@ Founders Card: NFT, no spending limit">
         const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
         var neededRSPInput = document.getElementById("neededRSP");
         if (neededRSP > receivedRSP) {
+            neededRSPInput.title = "ISSUE: needed RSP > received RSP";
             neededRSPInput.classList.add('orange-background');
         } else {
+            neededRSPInput.title = "";
             neededRSPInput.classList.remove('orange-background');
         }
     }

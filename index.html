@@ -156,7 +156,7 @@ Founders Card: NFT, no spending limit">
     function stakingDurationChanged() {
         const stakingDuration = parseFloat(document.getElementById("stakingDuration").value);
         document.getElementById("stakingDurationValue").textContent = stakingDuration + " months";
-        calculateResultRsp();
+        calculateCountOfRngFromRsp();
         colorNeededRSP();
     }
 

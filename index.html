@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RNG Staking Calculator</title>
+    <style>
+        body {
+            background-color: rgb(47, 21, 120);
+            color: gold; /* Set text color to white */
+        }
+        input {
+            background-color: white; /* Default background color for input fields */
+        }
+
+        .orange-background {
+            background-color: orange; /* CSS class for setting background color to orange */
+        }
+    </style>
+
+</head>
+<body>
+<h1>RNG Staking Calculator</h1>
+
+<h2>Staking RNG to receive RSP</h2>
+<div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
+    <label for="stakedAmount">Count of Staked RNG:</label>
+    <input type="range" id="stakedAmount" min="0" max="35000" value="5000.00">
+    <input type="number" id="stakedAmountValue" min="0" max="35000" value="5000.00" style="max-width: 80px;">
+    <span>€ (Euro Value staked in RNG equivalent)</span>
+</div>
+
+<div title="Bonus Staking duration:
+6 months: 0%
+12 months: 110%
+18 months: 225%
+24 months: 250%">
+    <label for="stakingDuration">Staking Duration:</label>
+    <input type="range" id="stakingDuration" min="6" max="24" step="6" value="6">
+    <span id="stakingDurationValue">6 months</span>
+</div>
+
+<div>
+    <label for="receivedRSP">Count of Received RSP:</label>
+    <input type="range" id="receivedRSP" min="0" max="157500" value="5000">
+    <input type="number" id="receivedRSPValue" min="0" max="157500" value="5000" style="max-width: 80px;">
+    <span>RSP</span>
+</div>
+
+<h2>Calculate needed RSP</h2>
+
+<div title="Card prices:
+Explorer Card: 0€/month, 300€ spending limit
+Pioneer Card: 9,99€/month (4,99€ in RNG), 2.500€ spending limit
+Voyager Card: 19,99€/month (14,99€ in RNG), 25.000€ spending limit
+Vanguard Card: 29,99€/month (24,99€ in RNG), 35.000€ spending limit
+Black Card: NFT, no spending limit
+Carbon Card: NFT, no spending limit
+Founders Card: NFT, no spending limit">
+    <label for="cardSelector">Select Card type:</label>
+    <select id="cardSelector">
+        <option value="explorer">Explorer Card</option>
+        <option value="pioneer">Pioneer Card</option>
+        <option value="voyager">Voyager Card</option>
+        <option value="vanguard">Vanguard Card</option>
+        <option value="black">Back Card</option>
+        <option value="carbon">Carbon Card</option>
+        <option value="founder">Founders Card</option>
+    </select>
+</div>
+
+<div>
+    <label for="rewardPercentage">Reward Percentage:</label>
+    <input type="range" id="rewardPercentage" min="3" max="8" step="0.1" value="3">
+    <input type="number" id="rewardPercentageValue" min="3" max="8" step="0.1" value="3" style="max-width: 80px;">
+    <span>Reward% in RNG</span>
+</div>
+
+<div>
+    <label for="rewardPercentageDuration">Reward Percentage Duration:</label>
+    <input type="range" id="rewardPercentageDuration" min="6" max="48" step="6" value="6">
+    <input type="number" id="rewardPercentageDurationValue" min="6" max="48" step="6" value="6"
+           style="max-width: 80px;">
+    <span>months</span>
+</div>
+
+<div>
+    <label for="totalBenefits">Total Benefits:</label>
+    <input type="range" id="totalBenefits" min="3" max="8" step="1" value="1">
+    <input type="number" id="totalBenefitsValue" min="3" max="8" step="1" value="1" style="max-width: 80px;">
+    <span>Benefit [10€ in RNG]</span>
+</div>
+
+<div>
+    <label for="totalBenefitsDuration">Additional Benefits Duration:</label>
+    <input type="range" id="totalBenefitsDuration" min="1" max="48" step="1" value="1">
+    <input type="number" id="totalBenefitsDurationValue" min="1" max="48" step="1" value="1"
+           style="max-width: 80px;">
+    <span>month(s)</span>
+</div>
+
+<div>
+    <label for="neededRSP">Amount of needed RSP:</label>
+    <input type="number" id="neededRSP" value="0" readonly>
+    <span>RSP</span>
+</div>
+
+<script>
+    // Bind listeners
+    document.getElementById("stakedAmount").addEventListener("input", stakedAmountChanged);
+    document.getElementById("stakedAmountValue").addEventListener("input", stakedAmountValueChanged);
+    document.getElementById("stakingDuration").addEventListener("input", stakingDurationChanged);
+    document.getElementById("receivedRSP").addEventListener("input", receivedRSPChanged);
+    document.getElementById("receivedRSPValue").addEventListener("input", receivedRSPValueChanged);
+    document.getElementById("cardSelector").addEventListener("change", cardSelectorChanged);
+    document.getElementById("rewardPercentage").addEventListener("input", rewardPercentageChanged);
+    document.getElementById("rewardPercentageValue").addEventListener("input", rewardPercentageValueChanged);
+    document.getElementById("totalBenefits").addEventListener("input", totalBenefitsChanged);
+    document.getElementById("totalBenefitsValue").addEventListener("input", totalBenefitsValueChanged);
+    document.getElementById("rewardPercentageDuration").addEventListener("input", rewardPercentageDurationChanged);
+    document.getElementById("rewardPercentageDurationValue").addEventListener("input", rewardPercentageDurationValueChanged);
+    document.getElementById("totalBenefitsDuration").addEventListener("input", totalBenefitsDurationChanged);
+    document.getElementById("totalBenefitsDurationValue").addEventListener("input", totalBenefitsDurationValueChanged);
+
+    // listeners for slider changed -> text
+    function rewardPercentageChanged() {
+        document.getElementById("rewardPercentageValue").value = parseFloat(document.getElementById("rewardPercentage").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function stakedAmountChanged() {
+        document.getElementById("stakedAmountValue").value = parseFloat(document.getElementById("stakedAmount").value).toFixed(2);
+        calculateResultRsp();
+        colorNeededRSP();
+    }
+
+    function receivedRSPChanged() {
+        document.getElementById("receivedRSPValue").value = parseFloat(document.getElementById("receivedRSP").value);
+        calculateCountOfRngFromRsp();
+        colorNeededRSP();
+    }
+
+    function totalBenefitsChanged() {
+        document.getElementById("totalBenefitsValue").value = parseFloat(document.getElementById("totalBenefits").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function stakingDurationChanged() {
+        const stakingDuration = parseFloat(document.getElementById("stakingDuration").value);
+        document.getElementById("stakingDurationValue").textContent = stakingDuration + " months";
+        calculateResultRsp();
+        colorNeededRSP();
+    }
+
+    function rewardPercentageDurationChanged() {
+        document.getElementById("rewardPercentageDurationValue").value = parseFloat(document.getElementById("rewardPercentageDuration").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function totalBenefitsDurationChanged() {
+        document.getElementById("totalBenefitsDurationValue").value = parseFloat(document.getElementById("totalBenefitsDuration").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    // listeners for text changed -> slider
+    function rewardPercentageValueChanged() {
+        document.getElementById("rewardPercentage").value = parseFloat(document.getElementById("rewardPercentageValue").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function stakedAmountValueChanged() {
+        document.getElementById("stakedAmount").value = parseFloat(document.getElementById("stakedAmountValue").value).toFixed(2);
+        calculateResultRsp();
+        colorNeededRSP();
+    }
+
+    function receivedRSPValueChanged() {
+        document.getElementById("receivedRSP").value = parseFloat(document.getElementById("receivedRSPValue").value);
+        calculateCountOfRngFromRsp();
+        colorNeededRSP();
+    }
+
+    function totalBenefitsValueChanged() {
+        document.getElementById("totalBenefits").value = parseFloat(document.getElementById("totalBenefitsValue").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function rewardPercentageDurationValueChanged() {
+        document.getElementById("rewardPercentageDuration").value = parseFloat(document.getElementById("rewardPercentageDurationValue").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function totalBenefitsDurationValueChanged() {
+        document.getElementById("totalBenefitsDuration").value = parseFloat(document.getElementById("totalBenefitsDurationValue").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function getRspMultiplier(stakingDuration) {
+        let rspMultiplier;
+        if (stakingDuration === 6) {
+            rspMultiplier = 1;
+        } else if (stakingDuration === 12) {
+            rspMultiplier = 2.1;
+        } else if (stakingDuration === 18) {
+            rspMultiplier = 3.25;
+        } else if (stakingDuration === 24) {
+            rspMultiplier = 4.5;
+        } else {
+            alert("Error: Invalid value for stakingDuration: " + stakingDuration);
+            rspMultiplier = 1;
+        }
+        return rspMultiplier;
+    }
+
+    function getStartReward(selectedCard) {
+        let startReward;
+        if (selectedCard === "explorer") {
+            startReward = 3;
+        } else if (selectedCard === "pioneer") {
+            startReward = 3;
+        } else if (selectedCard === "voyager") {
+            startReward = 3;
+        } else if (selectedCard === "vanguard") {
+            startReward = 3;
+        } else if (selectedCard === "black") {
+            startReward = 3;
+        } else if (selectedCard === "carbon") {
+            startReward = 5;
+        } else if (selectedCard === "founder") {
+            startReward = 8;
+        } else {
+            alert("Error: invalid card selected: " + selectedCard);
+        }
+        return startReward;
+    }
+
+    function getStartBenefits(selectedCard) {
+        let startBenefits;
+        if (selectedCard === "explorer") {
+            startBenefits = 1;
+        } else if (selectedCard === "pioneer") {
+            startBenefits = 2;
+        } else if (selectedCard === "voyager") {
+            startBenefits = 3;
+        } else if (selectedCard === "vanguard") {
+            startBenefits = 5;
+        } else if (selectedCard === "black") {
+            startBenefits = 3;
+        } else if (selectedCard === "carbon") {
+            startBenefits = 5;
+        } else if (selectedCard === "founder") {
+            startBenefits = 8;
+        } else {
+            alert("Error: invalid card selected: " + selectedCard);
+        }
+        return startBenefits;
+    }
+
+    // Calculation
+    function calculateResultRsp() {
+        // Get values from sliders
+        const stakedAmount = parseFloat(document.getElementById("stakedAmount").value);
+        const stakingDuration = parseInt(document.getElementById("stakingDuration").value);
+        const receivedRSP = stakedAmount * getRspMultiplier(stakingDuration);
+        console.log("calculateResultRsp");
+        console.log("stakedAmount: " + stakedAmount);
+        console.log("stakingDuration: " + stakingDuration);
+        console.log("multiplier: " + getRspMultiplier(stakingDuration));
+        console.log("receivedRSP: " + receivedRSP);
+
+        // Update values next to selectors
+        document.getElementById("receivedRSPValue").value = Math.round(receivedRSP);
+        document.getElementById("receivedRSP").value = Math.round(receivedRSP);
+    }
+
+    function calculateCountOfRngFromRsp() {
+        // Get values from sliders
+        const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
+        const stakingDuration = parseInt(document.getElementById("stakingDuration").value);
+        const stakedAmount = receivedRSP / getRspMultiplier(stakingDuration);
+        console.log("calculateCountOfRngFromRsp");
+        console.log("receivedRSP: " + receivedRSP);
+        console.log("stakingDuration: " + stakingDuration);
+        console.log("multiplier: " + getRspMultiplier(stakingDuration));
+        console.log("stakedAmount: " + stakedAmount);
+
+        // Update values next to selectors
+        document.getElementById("stakedAmountValue").value = stakedAmount.toFixed(2);
+        document.getElementById("stakedAmount").value = stakedAmount.toFixed(2);
+    }
+
+
+    function calculateAdditionalRewardPercent() {
+        const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
+        const selectedCard = document.getElementById("cardSelector").value;
+        currentReward = getStartReward(selectedCard);
+        neededRSP = 0;
+        stepCost = 0;
+        availableRSP = receivedRSP;
+        while (true) {
+            if (currentReward < 5) {
+                // 0,1 % = 600 RSP
+                stepCost = 600;
+            } else if (currentReward < 6) {
+                // 0,1 % = 1200 RSP
+                stepCost = 1200;
+            } else if (currentReward < 7) {
+                // 0,1 % = 2400 RSP
+                stepCost = 2400;
+            } else if (currentReward < 8) {
+                // 0,1 % = 4800 RSP
+                stepCost = 4800;
+            } else {
+                // limit is 8%
+                break;
+            }
+            if (availableRSP > stepCost) {
+                currentReward += 0.1;
+                neededRSP += stepCost;
+                availableRSP -= stepCost;
+            } else {
+                break;
+            }
+        }
+        document.getElementById("rewardPercentage").value = currentReward.toFixed(1);
+        document.getElementById("rewardPercentageValue").value = currentReward.toFixed(1);
+    }
+
+    function calculatetotalBenefits() {
+        const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
+        const selectedCard = document.getElementById("cardSelector").value;
+        currentBenefits = getStartBenefits(selectedCard);
+        neededRSP = 0;
+        stepCost = 0;
+        availableRSP = receivedRSP;
+        while (true) {
+            if (currentBenefits < 8) {
+                // 1 Benefit = 15 RSP/Month
+                stepCost = 15;
+            } else {
+                // limit is 5 Benefits
+                break;
+            }
+            if (availableRSP > stepCost) {
+                currentBenefits += 1;
+                neededRSP += stepCost;
+                availableRSP -= stepCost;
+            } else {
+                break;
+            }
+        }
+        document.getElementById("totalBenefits").value = currentReward.toFixed(1);
+        document.getElementById("totalBenefitsValue").value = currentReward.toFixed(1);
+    }
+
+    function cardSelectorChanged() {
+        const selectedCard = document.getElementById("cardSelector").value;
+        let minReward = getStartReward(selectedCard);
+        let minBenefits = getStartBenefits(selectedCard);
+
+        document.getElementById("rewardPercentage").min = minReward;
+        document.getElementById("rewardPercentageValue").min = minReward;
+        document.getElementById("rewardPercentage").value = minReward;
+        document.getElementById("rewardPercentageValue").value = minReward;
+        document.getElementById("totalBenefits").min = minBenefits;
+        document.getElementById("totalBenefitsValue").min = minBenefits;
+        document.getElementById("totalBenefits").value = minBenefits;
+        document.getElementById("totalBenefitsValue").value = minBenefits;
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function calculateNeededRSP() {
+        const rewardPercentage = parseFloat(document.getElementById("rewardPercentage").value);
+        const rewardPercentageDuration = parseFloat(document.getElementById("rewardPercentageDuration").value);
+        const totalBenefits = parseFloat(document.getElementById("totalBenefits").value);
+        const totalBenefitsDuration = parseFloat(document.getElementById("totalBenefitsDuration").value);
+        const selectedCard = document.getElementById("cardSelector").value;
+        let startReward = getStartReward(selectedCard);
+        let startBenefits = getStartBenefits(selectedCard)
+        let neededRSP = 0;
+        let stepCost = 0;
+        let currentReward = startReward;
+        console.log("startReward: " + startReward);
+        console.log("rewardPercentage: " + rewardPercentage);
+        while (true) {
+            console.log("currentReward: " + currentReward);
+            if (currentReward >= rewardPercentage) {
+                console.log("currentReward === rewardPercentage");
+                break;
+            }
+            if (currentReward < 5) {
+                // 0,1 % = 600 RSP
+                stepCost = 600;
+            } else if (currentReward < 6) {
+                // 0,1 % = 1200 RSP
+                stepCost = 1200;
+            } else if (currentReward < 7) {
+                // 0,1 % = 2400 RSP
+                stepCost = 2400;
+            } else if (currentReward < 8) {
+                // 0,1 % = 4800 RSP
+                stepCost = 4800;
+            } else {
+                // limit is 8%
+                break;
+            }
+            currentReward += 0.1;
+            // Add RSP for one step per 6 months
+            let additionalRSP = stepCost * (rewardPercentageDuration / 6);
+            console.log("additionalRSP: " + additionalRSP);
+            neededRSP += additionalRSP;
+        }
+        let currentBenefits = startBenefits;
+        console.log("startBenefits: " + startBenefits);
+        console.log("totalBenefits: " + totalBenefits);
+        while (true) {
+            console.log("currentBenefits: " + currentBenefits);
+            if (currentBenefits >= totalBenefits) {
+                // totalBenefits reached
+                break;
+            }
+            if (currentBenefits < 8) {
+                stepCost = 15;
+            } else {
+                // limit is 8 Benefits
+                break;
+            }
+            currentBenefits += 1;
+            let additionalRSP = stepCost * totalBenefitsDuration;
+            console.log("additionalRSP: " + additionalRSP);
+            neededRSP += additionalRSP;
+        }
+        // Set calculated neededRSP
+        document.getElementById("neededRSP").value = neededRSP;
+    }
+
+    function colorNeededRSP() {
+        const neededRSP = parseFloat(document.getElementById("neededRSP").value);
+        const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
+        var neededRSPInput = document.getElementById("neededRSP");
+        if(neededRSP > receivedRSP) {
+            neededRSPInput.classList.add('orange-background');
+        }
+        else {
+            neededRSPInput.classList.remove('orange-background');
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -9,6 +9,7 @@
             background-color: rgb(47, 21, 120);
             color: gold; /* Set text color to white */
         }
+
         input {
             background-color: white; /* Default background color for input fields */
         }
@@ -24,9 +25,9 @@
 
 <h2>Staking RNG to receive RSP</h2>
 <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
-    <label for="stakedAmount">Count of Staked RNG:</label>
-    <input type="range" id="stakedAmount" min="0" max="35000" value="5000.00">
-    <input type="number" id="stakedAmountValue" min="0" max="35000" value="5000.00" style="max-width: 80px;">
+    <label for="stakedAmount">Amount of Staked RNG:</label>
+    <input type="range" id="stakedAmount" min="0" max="400000" value="5000.00">
+    <input type="number" id="stakedAmountValue" min="0" max="400000" value="5000.00" style="max-width: 80px;">
     <span>€ (Euro Value staked in RNG equivalent)</span>
 </div>
 
@@ -41,9 +42,9 @@
 </div>
 
 <div>
-    <label for="receivedRSP">Count of Received RSP:</label>
-    <input type="range" id="receivedRSP" min="0" max="157500" value="5000">
-    <input type="number" id="receivedRSPValue" min="0" max="157500" value="5000" style="max-width: 80px;">
+    <label for="receivedRSP">Amount of Received RSP:</label>
+    <input type="range" id="receivedRSP" min="0" max="800000" value="5000">
+    <input type="number" id="receivedRSPValue" min="0" max="800000" value="5000" style="max-width: 80px;">
     <span>RSP</span>
 </div>
 
@@ -105,6 +106,10 @@ Founders Card: NFT, no spending limit">
     <span>RSP</span>
 </div>
 
+<div>
+    <button id="btnCopyRSP">Copy to received RSP</button>
+</div>
+
 <script>
     // Bind listeners
     document.getElementById("stakedAmount").addEventListener("input", stakedAmountChanged);
@@ -121,6 +126,7 @@ Founders Card: NFT, no spending limit">
     document.getElementById("rewardPercentageDurationValue").addEventListener("input", rewardPercentageDurationValueChanged);
     document.getElementById("totalBenefitsDuration").addEventListener("input", totalBenefitsDurationChanged);
     document.getElementById("totalBenefitsDurationValue").addEventListener("input", totalBenefitsDurationValueChanged);
+    document.getElementById("btnCopyRSP").addEventListener("click", copyRSP);
 
     // listeners for slider changed -> text
     function rewardPercentageChanged() {
@@ -447,12 +453,16 @@ Founders Card: NFT, no spending limit">
         const neededRSP = parseFloat(document.getElementById("neededRSP").value);
         const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
         var neededRSPInput = document.getElementById("neededRSP");
-        if(neededRSP > receivedRSP) {
+        if (neededRSP > receivedRSP) {
             neededRSPInput.classList.add('orange-background');
-        }
-        else {
+        } else {
             neededRSPInput.classList.remove('orange-background');
         }
+    }
+
+    function copyRSP() {
+        document.getElementById("receivedRSP").value = parseFloat(document.getElementById("neededRSP").value);
+        receivedRSPChanged();
     }
 
 </script>

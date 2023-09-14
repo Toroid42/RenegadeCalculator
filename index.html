@@ -8,6 +8,12 @@
         body {
             background-color: rgb(47, 21, 120);
             color: gold;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            margin: 0;
         }
 
         input {
@@ -17,97 +23,108 @@
         .orange-background {
             background-color: orange;
         }
+
+        .container {
+            text-align: left;
+        }
     </style>
 
 </head>
 <body>
-<h1>RNG Staking Calculator</h1>
+<div class="container">
+    <h1>RNG Staking Calculator</h1>
 
-<h2>Staking RNG to receive RSP</h2>
-<div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
-    <label for="stakedAmount">Amount of Staked RNG:</label>
-    <input type="range" id="stakedAmount" min="0" max="400000" value="5000.00">
-    <input type="number" id="stakedAmountValue" min="0" max="400000" value="5000.00" style="max-width: 80px;">
-    <span>€ (Euro Value staked in RNG equivalent)</span>
-</div>
+    <h2>Staking RNG to receive RSP</h2>
+    <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
+        <label for="stakedAmount">Amount of Staked RNG:</label>
+        <input type="range" id="stakedAmount" min="0" max="400000" value="5000.00">
+        <input type="number" id="stakedAmountValue" min="0" max="400000" value="5000.00" style="max-width: 80px;">
+        <span>€ (Euro Value staked in RNG equivalent)</span>
+    </div>
 
-<div title="Bonus Staking duration:
-6 months: 0%
-12 months: 110%
-18 months: 225%
-24 months: 250%">
-    <label for="stakingDuration">Staking Duration:</label>
-    <input type="range" id="stakingDuration" min="6" max="24" step="6" value="6">
-    <span id="stakingDurationValue">6 months</span>
-</div>
+    <div title="Bonus Staking duration:
+    6 months: 0%
+    12 months: 110%
+    18 months: 225%
+    24 months: 250%">
+        <label for="stakingDuration">Staking Duration:</label>
+        <input type="range" id="stakingDuration" min="6" max="24" step="6" value="6">
+        <span id="stakingDurationValue">6 months</span>
+    </div>
 
-<div>
-    <label for="receivedRSP">Amount of Received RSP:</label>
-    <input type="range" id="receivedRSP" min="0" max="800000" value="5000">
-    <input type="number" id="receivedRSPValue" min="0" max="800000" value="5000" style="max-width: 80px;">
-    <span>RSP</span>
-</div>
+    <div>
+        <label for="receivedRSP">Amount of Received RSP:</label>
+        <input type="range" id="receivedRSP" min="0" max="800000" value="5000">
+        <input type="number" id="receivedRSPValue" min="0" max="800000" value="5000" style="max-width: 80px;">
+        <span>RSP</span>
+    </div>
 
-<h2>Calculate needed RSP</h2>
+    <h2>Calculate needed RSP</h2>
 
-<div title="Card prices:
-Explorer Card: 0€/month, 300€ spending limit
-Pioneer Card: 9,99€/month (4,99€ in RNG), 2.500€ spending limit
-Voyager Card: 19,99€/month (14,99€ in RNG), 25.000€ spending limit
-Vanguard Card: 29,99€/month (24,99€ in RNG), 35.000€ spending limit
-Black Card: NFT, no spending limit
-Carbon Card: NFT, no spending limit
-Founders Card: NFT, no spending limit">
-    <label for="cardSelector">Select Card type:</label>
-    <select id="cardSelector">
-        <option value="explorer">Explorer Card</option>
-        <option value="pioneer">Pioneer Card</option>
-        <option value="voyager">Voyager Card</option>
-        <option value="vanguard">Vanguard Card</option>
-        <option value="black">Back Card</option>
-        <option value="carbon">Carbon Card</option>
-        <option value="founder">Founders Card</option>
-    </select>
-</div>
+    <div title="Card prices:
+    Explorer Card: 0€/month, 300€ spending limit
+    Pioneer Card: 9,99€/month (4,99€ in RNG), 2.500€ spending limit
+    Voyager Card: 19,99€/month (14,99€ in RNG), 25.000€ spending limit
+    Vanguard Card: 29,99€/month (24,99€ in RNG), 35.000€ spending limit
+    Black Card: NFT, no spending limit
+    Carbon Card: NFT, no spending limit
+    Founders Card: NFT, no spending limit">
+        <label for="cardSelector">Select Card type:</label>
+        <select id="cardSelector">
+            <option value="explorer">Explorer Card</option>
+            <option value="pioneer">Pioneer Card</option>
+            <option value="voyager">Voyager Card</option>
+            <option value="vanguard">Vanguard Card</option>
+            <option value="black">Back Card</option>
+            <option value="carbon">Carbon Card</option>
+            <option value="founder">Founders Card</option>
+        </select>
+    </div>
 
-<div>
-    <label for="rewardPercentage">Reward Percentage:</label>
-    <input type="range" id="rewardPercentage" min="3" max="8" step="0.1" value="3">
-    <input type="number" id="rewardPercentageValue" min="3" max="8" step="0.1" value="3" style="max-width: 80px;">
-    <span>Reward% in RNG</span>
-</div>
+    <div>
+        <label for="rewardPercentage">Reward Percentage:</label>
+        <input type="range" id="rewardPercentage" min="3" max="8" step="0.1" value="3">
+        <input type="number" id="rewardPercentageValue" min="3" max="8" step="0.1" value="3" style="max-width: 80px;">
+        <span>Reward% in RNG</span>
+    </div>
 
-<div>
-    <label for="rewardPercentageDuration">Reward Percentage Duration:</label>
-    <input type="range" id="rewardPercentageDuration" min="6" max="48" step="6" value="6">
-    <input type="number" id="rewardPercentageDurationValue" min="6" max="48" step="6" value="6"
-           style="max-width: 80px;">
-    <span>months</span>
-</div>
+    <div>
+        <label for="rewardPercentageDuration">Reward Percentage Duration:</label>
+        <input type="range" id="rewardPercentageDuration" min="6" max="48" step="6" value="6">
+        <input type="number" id="rewardPercentageDurationValue" min="6" max="48" step="6" value="6"
+               style="max-width: 80px;">
+        <span>months</span>
+    </div>
 
-<div>
-    <label for="totalBenefits">Total Benefits:</label>
-    <input type="range" id="totalBenefits" min="3" max="8" step="1" value="1">
-    <input type="number" id="totalBenefitsValue" min="3" max="8" step="1" value="1" style="max-width: 80px;">
-    <span>Benefit [10€ in RNG]</span>
-</div>
+    <div>
+        <label for="totalBenefits">Total Benefits:</label>
+        <input type="range" id="totalBenefits" min="3" max="8" step="1" value="1">
+        <input type="number" id="totalBenefitsValue" min="3" max="8" step="1" value="1" style="max-width: 80px;">
+        <span>Benefit [10€ in RNG]</span>
+    </div>
 
-<div>
-    <label for="totalBenefitsDuration">Additional Benefits Duration:</label>
-    <input type="range" id="totalBenefitsDuration" min="1" max="48" step="1" value="1">
-    <input type="number" id="totalBenefitsDurationValue" min="1" max="48" step="1" value="1"
-           style="max-width: 80px;">
-    <span>month(s)</span>
-</div>
+    <div>
+        <label for="totalBenefitsDuration">Additional Benefits Duration:</label>
+        <input type="range" id="totalBenefitsDuration" min="1" max="48" step="1" value="1">
+        <input type="number" id="totalBenefitsDurationValue" min="1" max="48" step="1" value="1"
+               style="max-width: 80px;">
+        <span>month(s)</span>
+    </div>
 
-<div>
-    <label for="neededRSP">Amount of needed RSP:</label>
-    <input type="number" id="neededRSP" value="0" readonly>
-    <span>RSP</span>
-</div>
+    <div>
+        <label for="neededRSP">Amount of needed RSP:</label>
+        <input type="number" id="neededRSP" value="0" readonly>
+        <span>RSP</span>
+    </div>
 
-<div>
-    <button id="btnCopyRSP">Copy to received RSP</button>
+    <div>
+        <button id="btnCopyRSP">Copy to received RSP</button>
+    </div>
+
+    <div>
+        <label style="color: darkgray;">Please note that there is no warranty for its correctness, and users should
+            verify results independently for accuracy.</label>
+    </div>
 </div>
 
 <script>

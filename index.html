@@ -81,6 +81,17 @@
         </select>
     </div>
 
+    <div title="The spend limit is the cap for which the 'Reward Percentage' is granted per month.
+Examples:
+Explorer with 3% for 300€ = 9€ Rewards Cap
+Pioneer with 3% for 2500€ = 75€ Rewards Cap
+Voyager with 3% for 25000€ = 750€ Rewards Cap
+Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
+        <label for="spendLimit">Spend Limit:</label>
+        <span id="spendLimit">300</span>
+        <span> €</span>
+    </div>
+
     <div>
         <label for="rewardPercentage">Reward Percentage:</label>
         <input type="range" id="rewardPercentage" min="3" max="8" step="0.1" value="3">
@@ -122,8 +133,7 @@
     </div>
 
     <div>
-        <label style="color: darkgray;">Please note that there is no warranty for its correctness, and users should
-            verify results independently for accuracy.</label>
+        <label style="color: darkgray;">This calculator is an independent project and is not affiliated with the official Renegade team. Please note that there is no warranty for its correctness, and users should verify results independently for accuracy.</label>
     </div>
 </div>
 
@@ -287,6 +297,39 @@
         return startBenefits;
     }
 
+    function getSpendLimit(selectedCard) {
+        let spendLimit;
+        if (selectedCard === "explorer") {
+            spendLimit = 300;
+        } else if (selectedCard === "pioneer") {
+            spendLimit = 2500;
+        } else if (selectedCard === "voyager") {
+            spendLimit = 25000;
+        } else if (selectedCard === "vanguard") {
+            spendLimit = 35000;
+        } else if (selectedCard === "black") {
+            spendLimit = undefined;
+        } else if (selectedCard === "carbon") {
+            spendLimit = undefined;
+        } else if (selectedCard === "founder") {
+            spendLimit = undefined;
+        } else {
+            alert("Error: invalid card selected: " + selectedCard);
+        }
+        return spendLimit;
+    }
+
+    function updateSpendLimit() {
+        const selectedCard = document.getElementById("cardSelector").value;
+        spendLimit = getSpendLimit(selectedCard);
+        if(spendLimit === undefined){
+            document.getElementById("spendLimit").textContent = "unlimited";
+        } else{
+            document.getElementById("spendLimit").textContent = spendLimit;
+        }
+
+    }
+
     // Calculation
     function calculateResultRsp() {
         // Get values from sliders
@@ -399,6 +442,7 @@
         document.getElementById("totalBenefitsValue").value = minBenefits;
         calculateNeededRSP();
         colorNeededRSP();
+        updateSpendLimit();
     }
 
     function calculateNeededRSP() {

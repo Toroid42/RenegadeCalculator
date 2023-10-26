@@ -109,8 +109,8 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
 
     <div>
         <label for="totalBenefits">Total Benefits:</label>
-        <input type="range" id="totalBenefits" min="3" max="8" step="1" value="1">
-        <input type="number" id="totalBenefitsValue" min="3" max="8" step="1" value="1" style="max-width: 80px;">
+        <input type="range" id="totalBenefits" min="1" max="8" step="1" value="1">
+        <input type="number" id="totalBenefitsValue" min="1" max="8" step="1" value="1" style="max-width: 80px;">
         <span>Benefit [10€ in RNG]</span>
     </div>
 
@@ -489,6 +489,7 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         let currentBenefits = startBenefits;
         console.log("startBenefits: " + startBenefits);
         console.log("totalBenefits: " + totalBenefits);
+        stepCost = 0;
         while (true) {
             console.log("currentBenefits: " + currentBenefits);
             if (currentBenefits >= totalBenefits) {
@@ -526,6 +527,10 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     function copyRSP() {
         document.getElementById("receivedRSP").value = parseFloat(document.getElementById("neededRSP").value);
         receivedRSPChanged();
+    }
+
+    window.onload = function () {
+        cardSelectorChanged();
     }
 
 </script>

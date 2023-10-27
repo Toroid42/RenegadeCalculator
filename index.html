@@ -37,8 +37,8 @@
     <h2>Staking RNG to receive RSP</h2>
     <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
         <label for="stakedAmount">Amount of Staked RNG:</label>
-        <input type="range" id="stakedAmount" min="0" max="400000" value="5000.00">
-        <input type="number" id="stakedAmountValue" min="0" max="400000" value="5000.00" style="max-width: 80px;">
+        <input type="range" id="stakedAmount" min="0" max="400000" value="0.00">
+        <input type="number" id="stakedAmountValue" min="0" max="400000" value="0.00" style="max-width: 80px;">
         <span>€ (Euro Value staked in RNG equivalent)</span>
     </div>
 
@@ -54,8 +54,8 @@
 
     <div>
         <label for="receivedRSP">Amount of Received RSP:</label>
-        <input type="range" id="receivedRSP" min="0" max="800000" value="5000">
-        <input type="number" id="receivedRSPValue" min="0" max="800000" value="5000" style="max-width: 80px;">
+        <input type="range" id="receivedRSP" min="0" max="800000" value="0">
+        <input type="number" id="receivedRSPValue" min="0" max="800000" value="0" style="max-width: 80px;">
         <span>RSP</span>
     </div>
 
@@ -465,14 +465,13 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         const minBenefits = getStartBenefits(selectedCard);
         const minSpendLimit = getSpendLimit(selectedCard);
 
-        if(minSpendLimit === undefined) {
+        if (minSpendLimit === undefined) {
             document.getElementById("spendLimit").value = 90000;
             document.getElementById("spendLimit").disabled = true;
             document.getElementById("spendLimitValue").disabled = true;
             document.getElementById("spendLimitValue").type = "text";
             document.getElementById("spendLimitValue").value = "unlimited";
-        }
-        else {
+        } else {
             document.getElementById("spendLimit").min = minSpendLimit;
             document.getElementById("spendLimit").max = 90000;
             document.getElementById("spendLimit").value = minSpendLimit;

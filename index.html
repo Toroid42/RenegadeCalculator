@@ -587,7 +587,7 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
                 break;
             }
             currentReward += 0.1;
-            currentReward = Math.round(currentReward * 10) / 10
+            currentReward = Math.round(currentReward * 10) / 10;
             // Add RSP for one step per 6 months
             let additionalRSP = stepCost * (rewardPercentageDuration / 6);
             console.log("additionalRSP: " + additionalRSP);
@@ -651,7 +651,9 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         if (minSpendLimit === undefined) {
             document.getElementById("rewardCap").value = "unlimited";
         } else {
-            document.getElementById("rewardCap").value = (spendLimit * rewardPercentage / 100) + totalBenefits * 10;
+            let rewardCap = (spendLimit * rewardPercentage / 100) + totalBenefits * 10;
+            rewardCap = Math.round(rewardCap * 10) / 10;
+            document.getElementById("rewardCap").value = rewardCap;
         }
 
     }

@@ -82,14 +82,27 @@
     </div>
 
     <div title="The spend limit is the cap for which the 'Reward Percentage' is granted per month.
-Examples:
+Examples (only with 3% Reward% and default Spend Limit):
 Explorer with 3% for 300€ = 9€ Rewards Cap
 Pioneer with 3% for 2500€ = 75€ Rewards Cap
 Voyager with 3% for 25000€ = 750€ Rewards Cap
 Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         <label for="spendLimit">Spend Limit:</label>
-        <span id="spendLimit">300</span>
-        <span> €</span>
+        <input type="range" id="spendLimit" min="300" max="90000" step="100" value="300">
+        <input type="number" id="spendLimitValue" min="300" max="90000" step="100" value="300" style="max-width: 80px;">
+        <span id="spendLimitUnit">€</span>
+    </div>
+
+    <div title="The spend limit can be extended using RSP:
+300...60000€: 40 RSP/+100€
+60000...70000€: 80 RSP/+100€
+70000...80000€: 160 RSP/+100€
+80000...90000€: 320 RSP/+100€">
+        <label for="spendLimitDuration">Spend Limit Duration:</label>
+        <input type="range" id="spendLimitDuration" min="6" max="48" step="6" value="6">
+        <input type="number" id="spendLimitDurationValue" min="6" max="48" step="6" value="6"
+               style="max-width: 80px;">
+        <span>months</span>
     </div>
 
     <div>
@@ -133,7 +146,9 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     </div>
 
     <div>
-        <label style="color: darkgray;">This calculator is an independent project and is not affiliated with the official Renegade team. Please note that there is no warranty for its correctness, and users should verify results independently for accuracy.</label>
+        <label style="color: darkgray;">This calculator is an independent project and is not affiliated with the
+            official Renegade team. Please note that there is no warranty for its correctness, and users should verify
+            results independently for accuracy.</label>
     </div>
 </div>
 
@@ -145,6 +160,10 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     document.getElementById("receivedRSP").addEventListener("input", receivedRSPChanged);
     document.getElementById("receivedRSPValue").addEventListener("input", receivedRSPValueChanged);
     document.getElementById("cardSelector").addEventListener("change", cardSelectorChanged);
+    document.getElementById("spendLimit").addEventListener("input", spendLimitChanged);
+    document.getElementById("spendLimitValue").addEventListener("input", spendLimitValueChanged);
+    document.getElementById("spendLimitDuration").addEventListener("input", spendLimitDurationChanged);
+    document.getElementById("spendLimitDurationValue").addEventListener("input", spendLimitDurationValueChanged);
     document.getElementById("rewardPercentage").addEventListener("input", rewardPercentageChanged);
     document.getElementById("rewardPercentageValue").addEventListener("input", rewardPercentageValueChanged);
     document.getElementById("totalBenefits").addEventListener("input", totalBenefitsChanged);
@@ -156,6 +175,18 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     document.getElementById("btnCopyRSP").addEventListener("click", copyRSP);
 
     // listeners for slider changed -> text
+    function spendLimitChanged() {
+        document.getElementById("spendLimitValue").value = parseFloat(document.getElementById("spendLimit").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function spendLimitDurationChanged() {
+        document.getElementById("spendLimitDurationValue").value = parseFloat(document.getElementById("spendLimitDuration").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
     function rewardPercentageChanged() {
         document.getElementById("rewardPercentageValue").value = parseFloat(document.getElementById("rewardPercentage").value);
         calculateNeededRSP();
@@ -200,6 +231,18 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     }
 
     // listeners for text changed -> slider
+    function spendLimitValueChanged() {
+        document.getElementById("spendLimit").value = parseFloat(document.getElementById("spendLimitValue").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
+    function spendLimitDurationValueChanged() {
+        document.getElementById("spendLimitDuration").value = parseFloat(document.getElementById("spendLimitDurationValue").value);
+        calculateNeededRSP();
+        colorNeededRSP();
+    }
+
     function rewardPercentageValueChanged() {
         document.getElementById("rewardPercentage").value = parseFloat(document.getElementById("rewardPercentageValue").value);
         calculateNeededRSP();
@@ -319,17 +362,6 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         return spendLimit;
     }
 
-    function updateSpendLimit() {
-        const selectedCard = document.getElementById("cardSelector").value;
-        spendLimit = getSpendLimit(selectedCard);
-        if(spendLimit === undefined){
-            document.getElementById("spendLimit").textContent = "unlimited";
-        } else{
-            document.getElementById("spendLimit").textContent = spendLimit;
-        }
-
-    }
-
     // Calculation
     function calculateResultRsp() {
         // Get values from sliders
@@ -429,9 +461,30 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
 
     function cardSelectorChanged() {
         const selectedCard = document.getElementById("cardSelector").value;
-        let minReward = getStartReward(selectedCard);
-        let minBenefits = getStartBenefits(selectedCard);
+        const minReward = getStartReward(selectedCard);
+        const minBenefits = getStartBenefits(selectedCard);
+        const minSpendLimit = getSpendLimit(selectedCard);
 
+        if(minSpendLimit === undefined) {
+            document.getElementById("spendLimit").value = 90000;
+            document.getElementById("spendLimit").disabled = true;
+            document.getElementById("spendLimitValue").disabled = true;
+            document.getElementById("spendLimitValue").type = "text";
+            document.getElementById("spendLimitValue").value = "unlimited";
+        }
+        else {
+            document.getElementById("spendLimit").min = minSpendLimit;
+            document.getElementById("spendLimit").max = 90000;
+            document.getElementById("spendLimit").value = minSpendLimit;
+            document.getElementById("spendLimit").disabled = false;
+            document.getElementById("spendLimitValue").min = minSpendLimit;
+            document.getElementById("spendLimitValue").max = 90000;
+            document.getElementById("spendLimitValue").value = minSpendLimit;
+            document.getElementById("spendLimitValue").disabled = false;
+            document.getElementById("spendLimitValue").type = "number";
+            document.getElementById("spendLimitDuration").disabled = false;
+            document.getElementById("spendLimitDurationValue").disabled = false;
+        }
         document.getElementById("rewardPercentage").min = minReward;
         document.getElementById("rewardPercentageValue").min = minReward;
         document.getElementById("rewardPercentage").value = minReward;
@@ -442,19 +495,54 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         document.getElementById("totalBenefitsValue").value = minBenefits;
         calculateNeededRSP();
         colorNeededRSP();
-        updateSpendLimit();
     }
 
     function calculateNeededRSP() {
+        const spendLimit = parseFloat(document.getElementById("spendLimit").value);
+        const spendLimitDuration = parseFloat(document.getElementById("spendLimitDuration").value);
         const rewardPercentage = parseFloat(document.getElementById("rewardPercentage").value);
         const rewardPercentageDuration = parseFloat(document.getElementById("rewardPercentageDuration").value);
         const totalBenefits = parseFloat(document.getElementById("totalBenefits").value);
         const totalBenefitsDuration = parseFloat(document.getElementById("totalBenefitsDuration").value);
         const selectedCard = document.getElementById("cardSelector").value;
+        let startSpendLimit = getSpendLimit(selectedCard);
         let startReward = getStartReward(selectedCard);
         let startBenefits = getStartBenefits(selectedCard)
         let neededRSP = 0;
         let stepCost = 0;
+        // Calculate SpendLimit costs
+        let currentSpendLimit = startSpendLimit;
+        console.log("startSpendLimit: " + startSpendLimit);
+        console.log("spendLimit: " + spendLimit);
+        while (true) {
+            console.log("currentSpendLimit: " + currentSpendLimit);
+            if (currentSpendLimit >= spendLimit) {
+                console.log("currentSpendLimit === spendLimit");
+                break;
+            }
+            if (currentSpendLimit < 60000) {
+                // +100€ Limit = 40 RSP
+                stepCost = 40;
+            } else if (currentSpendLimit < 70000) {
+                // +100€ Limit = 80 RSP
+                stepCost = 80;
+            } else if (currentSpendLimit < 80000) {
+                // +100€ Limit = 160 RSP
+                stepCost = 160;
+            } else if (currentSpendLimit < 90000) {
+                // +100€ Limit = 320 RSP
+                stepCost = 320;
+            } else {
+                // limit is 90000€ Spend Limit
+                break;
+            }
+            currentSpendLimit += 100;
+            // Add RSP for one step per 6 months
+            let additionalRSP = stepCost * (spendLimitDuration / 6);
+            console.log("additionalRSP: " + additionalRSP);
+            neededRSP += additionalRSP;
+        }
+        // Calculate rewardPercentage costs
         let currentReward = startReward;
         console.log("startReward: " + startReward);
         console.log("rewardPercentage: " + rewardPercentage);
@@ -487,6 +575,7 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
             console.log("additionalRSP: " + additionalRSP);
             neededRSP += additionalRSP;
         }
+        // Calculate Benefits costs
         let currentBenefits = startBenefits;
         console.log("startBenefits: " + startBenefits);
         console.log("totalBenefits: " + totalBenefits);

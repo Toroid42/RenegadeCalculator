@@ -36,7 +36,7 @@
 
     <h2>Staking RNG to receive RSP</h2>
     <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
-        <label for="stakedAmount">Amount of Staked RNG:</label>
+        <label for="stakedAmount">Amount of staked RNG:</label>
         <input type="range" id="stakedAmount" min="0" max="400000" value="0.00">
         <input type="number" id="stakedAmountValue" min="0" max="400000" value="0.00" style="max-width: 80px;">
         <span>€ (Euro Value staked in RNG equivalent)</span>
@@ -136,6 +136,12 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     </div>
 
     <div>
+        <label for="rewardCap">Maximum possible Reward Cap (per month):</label>
+        <input type="text" id="rewardCap" value="0" readonly>
+        <span>€</span>
+    </div>
+
+    <div>
         <label for="neededRSP">Amount of needed RSP:</label>
         <input type="number" id="neededRSP" value="0" readonly>
         <span>RSP</span>
@@ -178,18 +184,21 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     function spendLimitChanged() {
         document.getElementById("spendLimitValue").value = parseFloat(document.getElementById("spendLimit").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
     function spendLimitDurationChanged() {
         document.getElementById("spendLimitDurationValue").value = parseFloat(document.getElementById("spendLimitDuration").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
     function rewardPercentageChanged() {
         document.getElementById("rewardPercentageValue").value = parseFloat(document.getElementById("rewardPercentage").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
@@ -208,6 +217,7 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     function totalBenefitsChanged() {
         document.getElementById("totalBenefitsValue").value = parseFloat(document.getElementById("totalBenefits").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
@@ -221,12 +231,14 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     function rewardPercentageDurationChanged() {
         document.getElementById("rewardPercentageDurationValue").value = parseFloat(document.getElementById("rewardPercentageDuration").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
     function totalBenefitsDurationChanged() {
         document.getElementById("totalBenefitsDurationValue").value = parseFloat(document.getElementById("totalBenefitsDuration").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
@@ -234,18 +246,21 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     function spendLimitValueChanged() {
         document.getElementById("spendLimit").value = parseFloat(document.getElementById("spendLimitValue").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
     function spendLimitDurationValueChanged() {
         document.getElementById("spendLimitDuration").value = parseFloat(document.getElementById("spendLimitDurationValue").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
     function rewardPercentageValueChanged() {
         document.getElementById("rewardPercentage").value = parseFloat(document.getElementById("rewardPercentageValue").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
@@ -264,18 +279,21 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     function totalBenefitsValueChanged() {
         document.getElementById("totalBenefits").value = parseFloat(document.getElementById("totalBenefitsValue").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
     function rewardPercentageDurationValueChanged() {
         document.getElementById("rewardPercentageDuration").value = parseFloat(document.getElementById("rewardPercentageDurationValue").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
     function totalBenefitsDurationValueChanged() {
         document.getElementById("totalBenefitsDuration").value = parseFloat(document.getElementById("totalBenefitsDurationValue").value);
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
@@ -493,6 +511,7 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         document.getElementById("totalBenefits").value = minBenefits;
         document.getElementById("totalBenefitsValue").value = minBenefits;
         calculateNeededRSP();
+        calculateRewardCap();
         colorNeededRSP();
     }
 
@@ -620,6 +639,21 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
 
     window.onload = function () {
         cardSelectorChanged();
+    }
+
+    function calculateRewardCap() {
+        const rewardPercentage = parseFloat(document.getElementById("rewardPercentage").value);
+        const spendLimit = parseFloat(document.getElementById("spendLimit").value);
+        const totalBenefits = parseFloat(document.getElementById("totalBenefits").value);
+
+        const selectedCard = document.getElementById("cardSelector").value;
+        const minSpendLimit = getSpendLimit(selectedCard);
+        if (minSpendLimit === undefined) {
+            document.getElementById("rewardCap").value = "unlimited";
+        } else {
+            document.getElementById("rewardCap").value = (spendLimit * rewardPercentage / 100) + totalBenefits * 10;
+        }
+
     }
 
 </script>

@@ -32,34 +32,9 @@
 </head>
 <body>
 <div class="container">
-    <h1>RNG Staking Calculator</h1>
+    <h1>RNG Card Customize Calculator</h1>
 
-    <h2>Staking RNG to receive RSP</h2>
-    <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
-        <label for="stakedAmount">Amount of staked RNG:</label>
-        <input type="range" id="stakedAmount" min="0" max="400000" value="0.00">
-        <input type="number" id="stakedAmountValue" min="0" max="400000" value="0.00" style="max-width: 80px;">
-        <span>€ (Euro Value staked in RNG equivalent)</span>
-    </div>
-
-    <div title="Bonus Staking duration:
-    6 months: 0%
-    12 months: 110%
-    18 months: 225%
-    24 months: 250%">
-        <label for="stakingDuration">Staking Duration:</label>
-        <input type="range" id="stakingDuration" min="6" max="24" step="6" value="6">
-        <span id="stakingDurationValue">6 months</span>
-    </div>
-
-    <div>
-        <label for="receivedRSP">Amount of Received RSP:</label>
-        <input type="range" id="receivedRSP" min="0" max="800000" value="0">
-        <input type="number" id="receivedRSPValue" min="0" max="800000" value="0" style="max-width: 80px;">
-        <span>RSP</span>
-    </div>
-
-    <h2>Calculate needed RSP</h2>
+    <h2>Customize your card</h2>
 
     <div title="Card prices:
     Explorer Card: 0€/month, 300€ spending limit
@@ -141,19 +116,33 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         <span>€</span>
     </div>
 
+    <h2>Needed Staking amount</h2>
     <div>
-        <label for="neededRSP">Amount of needed RSP:</label>
-        <input type="number" id="neededRSP" value="0" readonly>
+        <label for="neededRspValue">Amount of needed RSP:</label>
+        <input type="number" id="neededRspValue" value="0" readonly>
         <span>RSP</span>
     </div>
 
-    <div>
-        <button id="btnCopyRSP">Copy to received RSP</button>
+    <div title="Bonus Staking duration:
+    6 months: 0%
+    12 months: 110%
+    18 months: 225%
+    24 months: 250%">
+        <label for="stakingDuration">Staking Duration:</label>
+        <input type="range" id="stakingDuration" min="6" max="24" step="6" value="6">
+        <span id="stakingDurationValue">6 months</span>
+    </div>
+
+    <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
+        <label for="stakedAmountValue">Required Euro staked:</label>
+        <input type="number" id="stakedAmountValue" value="0" style="max-width: 80px;" readonly>
+        <span>€ (Euro Value staked in RNG equivalent)</span>
     </div>
 
     <div>
         <br>
-        <label><b>My ETH/BSC/MATIC wallet if you want to support me:</b> 0xB9dcf72f21553013c56a1C92B2C7f1FB3f26a450</label>
+        <label><b>My ETH/BSC/MATIC wallet if you want to support me:</b>
+            0xB9dcf72f21553013c56a1C92B2C7f1FB3f26a450</label>
     </div>
 
     <div>
@@ -166,11 +155,7 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
 
 <script>
     // Bind listeners
-    document.getElementById("stakedAmount").addEventListener("input", stakedAmountChanged);
-    document.getElementById("stakedAmountValue").addEventListener("input", stakedAmountValueChanged);
     document.getElementById("stakingDuration").addEventListener("input", stakingDurationChanged);
-    document.getElementById("receivedRSP").addEventListener("input", receivedRSPChanged);
-    document.getElementById("receivedRSPValue").addEventListener("input", receivedRSPValueChanged);
     document.getElementById("cardSelector").addEventListener("change", cardSelectorChanged);
     document.getElementById("spendLimit").addEventListener("input", spendLimitChanged);
     document.getElementById("spendLimitValue").addEventListener("input", spendLimitValueChanged);
@@ -184,68 +169,54 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     document.getElementById("rewardPercentageDurationValue").addEventListener("input", rewardPercentageDurationValueChanged);
     document.getElementById("totalBenefitsDuration").addEventListener("input", totalBenefitsDurationChanged);
     document.getElementById("totalBenefitsDurationValue").addEventListener("input", totalBenefitsDurationValueChanged);
-    document.getElementById("btnCopyRSP").addEventListener("click", copyRSP);
 
     // listeners for slider changed -> text
     function spendLimitChanged() {
         document.getElementById("spendLimitValue").value = parseFloat(document.getElementById("spendLimit").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function spendLimitDurationChanged() {
         document.getElementById("spendLimitDurationValue").value = parseFloat(document.getElementById("spendLimitDuration").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function rewardPercentageChanged() {
         document.getElementById("rewardPercentageValue").value = parseFloat(document.getElementById("rewardPercentage").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
-    }
-
-    function stakedAmountChanged() {
-        document.getElementById("stakedAmountValue").value = parseFloat(document.getElementById("stakedAmount").value).toFixed(2);
-        calculateResultRsp();
-        colorNeededRSP();
-    }
-
-    function receivedRSPChanged() {
-        document.getElementById("receivedRSPValue").value = parseFloat(document.getElementById("receivedRSP").value);
         calculateCountOfRngFromRsp();
-        colorNeededRSP();
     }
 
     function totalBenefitsChanged() {
         document.getElementById("totalBenefitsValue").value = parseFloat(document.getElementById("totalBenefits").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function stakingDurationChanged() {
         const stakingDuration = parseFloat(document.getElementById("stakingDuration").value);
         document.getElementById("stakingDurationValue").textContent = stakingDuration + " months";
         calculateCountOfRngFromRsp();
-        colorNeededRSP();
     }
 
     function rewardPercentageDurationChanged() {
         document.getElementById("rewardPercentageDurationValue").value = parseFloat(document.getElementById("rewardPercentageDuration").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function totalBenefitsDurationChanged() {
         document.getElementById("totalBenefitsDurationValue").value = parseFloat(document.getElementById("totalBenefitsDuration").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     // listeners for text changed -> slider
@@ -253,54 +224,42 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         document.getElementById("spendLimit").value = parseFloat(document.getElementById("spendLimitValue").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function spendLimitDurationValueChanged() {
         document.getElementById("spendLimitDuration").value = parseFloat(document.getElementById("spendLimitDurationValue").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function rewardPercentageValueChanged() {
         document.getElementById("rewardPercentage").value = parseFloat(document.getElementById("rewardPercentageValue").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
-    }
-
-    function stakedAmountValueChanged() {
-        document.getElementById("stakedAmount").value = parseFloat(document.getElementById("stakedAmountValue").value).toFixed(2);
-        calculateResultRsp();
-        colorNeededRSP();
-    }
-
-    function receivedRSPValueChanged() {
-        document.getElementById("receivedRSP").value = parseFloat(document.getElementById("receivedRSPValue").value);
         calculateCountOfRngFromRsp();
-        colorNeededRSP();
     }
 
     function totalBenefitsValueChanged() {
         document.getElementById("totalBenefits").value = parseFloat(document.getElementById("totalBenefitsValue").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function rewardPercentageDurationValueChanged() {
         document.getElementById("rewardPercentageDuration").value = parseFloat(document.getElementById("rewardPercentageDurationValue").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function totalBenefitsDurationValueChanged() {
         document.getElementById("totalBenefitsDuration").value = parseFloat(document.getElementById("totalBenefitsDurationValue").value);
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
+        calculateCountOfRngFromRsp();
     }
 
     function getRspMultiplier(stakingDuration) {
@@ -387,36 +346,19 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     }
 
     // Calculation
-    function calculateResultRsp() {
-        // Get values from sliders
-        const stakedAmount = parseFloat(document.getElementById("stakedAmount").value);
-        const stakingDuration = parseInt(document.getElementById("stakingDuration").value);
-        const receivedRSP = stakedAmount * getRspMultiplier(stakingDuration);
-        console.log("calculateResultRsp");
-        console.log("stakedAmount: " + stakedAmount);
-        console.log("stakingDuration: " + stakingDuration);
-        console.log("multiplier: " + getRspMultiplier(stakingDuration));
-        console.log("receivedRSP: " + receivedRSP);
-
-        // Update values next to selectors
-        document.getElementById("receivedRSPValue").value = Math.round(receivedRSP);
-        document.getElementById("receivedRSP").value = Math.round(receivedRSP);
-    }
 
     function calculateCountOfRngFromRsp() {
-        // Get values from sliders
-        const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
-        const stakingDuration = parseInt(document.getElementById("stakingDuration").value);
-        const stakedAmount = receivedRSP / getRspMultiplier(stakingDuration);
         console.log("calculateCountOfRngFromRsp");
-        console.log("receivedRSP: " + receivedRSP);
-        console.log("stakingDuration: " + stakingDuration);
-        console.log("multiplier: " + getRspMultiplier(stakingDuration));
-        console.log("stakedAmount: " + stakedAmount);
+        // Get values from sliders
+        const neededRsp = parseFloat(document.getElementById("neededRspValue").value);
+        const stakingDuration = parseInt(document.getElementById("stakingDuration").value);
+        const stakedAmount = neededRsp / getRspMultiplier(stakingDuration);
+        console.log("  stakingDuration: " + stakingDuration);
+        console.log("  multiplier: " + getRspMultiplier(stakingDuration));
+        console.log("  stakedAmount: " + stakedAmount);
 
         // Update values next to selectors
         document.getElementById("stakedAmountValue").value = stakedAmount.toFixed(2);
-        document.getElementById("stakedAmount").value = stakedAmount.toFixed(2);
     }
 
 
@@ -518,10 +460,10 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         document.getElementById("totalBenefitsValue").value = minBenefits;
         calculateNeededRSP();
         calculateRewardCap();
-        colorNeededRSP();
     }
 
     function calculateNeededRSP() {
+        console.log("calculateNeededRSP")
         const spendLimit = parseFloat(document.getElementById("spendLimit").value);
         const spendLimitDuration = parseFloat(document.getElementById("spendLimitDuration").value);
         const rewardPercentage = parseFloat(document.getElementById("rewardPercentage").value);
@@ -536,12 +478,12 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         let stepCost = 0;
         // Calculate SpendLimit costs
         let currentSpendLimit = startSpendLimit;
-        console.log("startSpendLimit: " + startSpendLimit);
-        console.log("spendLimit: " + spendLimit);
+        console.log("  startSpendLimit: " + startSpendLimit);
+        console.log("  spendLimit: " + spendLimit);
         while (true) {
-            console.log("currentSpendLimit: " + currentSpendLimit);
+            console.log("  currentSpendLimit: " + currentSpendLimit);
             if (currentSpendLimit >= spendLimit) {
-                console.log("currentSpendLimit === spendLimit");
+                console.log("  currentSpendLimit === spendLimit");
                 break;
             }
             if (currentSpendLimit < 60000) {
@@ -563,17 +505,17 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
             currentSpendLimit += 100;
             // Add RSP for one step per 6 months
             let additionalRSP = stepCost * (spendLimitDuration / 6);
-            console.log("additionalRSP: " + additionalRSP);
+            console.log("  additionalRSP: " + additionalRSP);
             neededRSP += additionalRSP;
         }
         // Calculate rewardPercentage costs
         let currentReward = startReward;
-        console.log("startReward: " + startReward);
-        console.log("rewardPercentage: " + rewardPercentage);
+        console.log("  startReward: " + startReward);
+        console.log("  rewardPercentage: " + rewardPercentage);
         while (true) {
-            console.log("currentReward: " + currentReward);
+            console.log("  currentReward: " + currentReward);
             if (currentReward >= rewardPercentage) {
-                console.log("currentReward === rewardPercentage");
+                console.log("  currentReward === rewardPercentage");
                 break;
             }
             if (currentReward < 5) {
@@ -596,16 +538,16 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
             currentReward = Math.round(currentReward * 10) / 10;
             // Add RSP for one step per 6 months
             let additionalRSP = stepCost * (rewardPercentageDuration / 6);
-            console.log("additionalRSP: " + additionalRSP);
+            console.log("  additionalRSP: " + additionalRSP);
             neededRSP += additionalRSP;
         }
         // Calculate Benefits costs
         let currentBenefits = startBenefits;
-        console.log("startBenefits: " + startBenefits);
-        console.log("totalBenefits: " + totalBenefits);
+        console.log("  startBenefits: " + startBenefits);
+        console.log("  totalBenefits: " + totalBenefits);
         stepCost = 0;
         while (true) {
-            console.log("currentBenefits: " + currentBenefits);
+            console.log("  currentBenefits: " + currentBenefits);
             if (currentBenefits >= totalBenefits) {
                 // totalBenefits reached
                 break;
@@ -618,29 +560,11 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
             }
             currentBenefits += 1;
             let additionalRSP = stepCost * totalBenefitsDuration;
-            console.log("additionalRSP: " + additionalRSP);
+            console.log("  additionalRSP: " + additionalRSP);
             neededRSP += additionalRSP;
         }
         // Set calculated neededRSP
-        document.getElementById("neededRSP").value = neededRSP;
-    }
-
-    function colorNeededRSP() {
-        const neededRSP = parseFloat(document.getElementById("neededRSP").value);
-        const receivedRSP = parseFloat(document.getElementById("receivedRSP").value);
-        var neededRSPInput = document.getElementById("neededRSP");
-        if (neededRSP > receivedRSP) {
-            neededRSPInput.title = "ISSUE: needed RSP > received RSP";
-            neededRSPInput.classList.add('orange-background');
-        } else {
-            neededRSPInput.title = "";
-            neededRSPInput.classList.remove('orange-background');
-        }
-    }
-
-    function copyRSP() {
-        document.getElementById("receivedRSP").value = parseFloat(document.getElementById("neededRSP").value);
-        receivedRSPChanged();
+        document.getElementById("neededRspValue").value = neededRSP;
     }
 
     window.onload = function () {

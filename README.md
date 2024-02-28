@@ -1,4 +1,7 @@
 # RenegadeCalculator
+
+Link: [RenegadeCalculator](https://toroid42.github.io/RenegadeCalculator/)
+
 Calculator for Renegade (RNG) to Reward Squad Points (RSP) and possible Benefits/Reward%
 
 

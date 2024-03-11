@@ -6,26 +6,89 @@
     <title>RNG Staking Calculator</title>
     <style>
         body {
-            background-color: rgb(47, 21, 120);
+            background-color: #2F1578FF;
             color: gold;
+            font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
-        }
-
-        input {
-            background-color: white;
-        }
-
-        .orange-background {
-            background-color: orange;
+            padding: 20px;
         }
 
         .container {
-            text-align: left;
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #45298e;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type='range'] {
+            width: 100%;
+        }
+
+        input[type='number'] {
+            width: 80px;
+            text-align: center;
+        }
+
+        input[type='text'] {
+            width: calc(100% - 70px);
+            text-align: center;
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid #ffffff;
+            color: #ffeb3b;
+            font-weight: bold;
+        }
+
+        select, input[type='text'], input[type='number'] {
+            margin-top: 5px;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: #512da8;
+            color: #ffffff;
+            border: 1px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus, input[type='text']:focus, input[type='number']:focus {
+            outline: none;
+            border-color: #ffd600;
+        }
+
+        span {
+            display: inline-block;
+            margin-left: 5px;
+        }
+
+        .credits {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .credits a {
+            color: #e0e0e0;
+            text-decoration: none;
+        }
+
+        .credits a:hover {
+            text-decoration: underline;
         }
     </style>
 
@@ -44,7 +107,7 @@
     Black Card: NFT, no spending limit
     Carbon Card: NFT, no spending limit
     Founders Card: NFT, no spending limit">
-        <label for="cardSelector">Select Card type:</label>
+        <label for="cardSelector"><strong>Select Card type:</strong></label>
         <select id="cardSelector">
             <option value="explorer">Explorer Card</option>
             <option value="pioneer">Pioneer Card</option>
@@ -62,7 +125,7 @@ Explorer with 3% for 300€ = 9€ Rewards Cap
 Pioneer with 3% for 2500€ = 75€ Rewards Cap
 Voyager with 3% for 25000€ = 750€ Rewards Cap
 Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
-        <label for="spendLimit">Spend Limit:</label>
+        <label for="spendLimit"><strong>Spend Limit:</strong></label>
         <input type="range" id="spendLimit" min="300" max="90000" step="100" value="300">
         <input type="number" id="spendLimitValue" min="300" max="90000" step="100" value="300" style="max-width: 80px;">
         <span id="spendLimitUnit">€</span>
@@ -73,7 +136,7 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
 60000...70000€: 80 RSP/+100€
 70000...80000€: 160 RSP/+100€
 80000...90000€: 320 RSP/+100€">
-        <label for="spendLimitDuration">Spend Limit Duration:</label>
+        <label for="spendLimitDuration"><strong>Spend Limit Duration:</strong></label>
         <input type="range" id="spendLimitDuration" min="6" max="48" step="6" value="6">
         <input type="number" id="spendLimitDurationValue" min="6" max="48" step="6" value="6"
                style="max-width: 80px;">
@@ -81,14 +144,14 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     </div>
 
     <div>
-        <label for="rewardPercentage">Reward Percentage:</label>
+        <label for="rewardPercentage"><strong>Reward Percentage:</strong></label>
         <input type="range" id="rewardPercentage" min="3" max="8" step="0.1" value="3">
         <input type="number" id="rewardPercentageValue" min="3" max="8" step="0.1" value="3" style="max-width: 80px;">
         <span>Reward% in RNG</span>
     </div>
 
     <div>
-        <label for="rewardPercentageDuration">Reward Percentage Duration:</label>
+        <label for="rewardPercentageDuration"><strong>Reward Percentage Duration:</strong></label>
         <input type="range" id="rewardPercentageDuration" min="6" max="48" step="6" value="6">
         <input type="number" id="rewardPercentageDurationValue" min="6" max="48" step="6" value="6"
                style="max-width: 80px;">
@@ -96,14 +159,14 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     </div>
 
     <div>
-        <label for="totalBenefits">Total Benefits:</label>
+        <label for="totalBenefits"><strong>Total Benefits:</strong></label>
         <input type="range" id="totalBenefits" min="1" max="8" step="1" value="1">
         <input type="number" id="totalBenefitsValue" min="1" max="8" step="1" value="1" style="max-width: 80px;">
         <span>Benefit [10€ in RNG]</span>
     </div>
 
     <div>
-        <label for="totalBenefitsDuration">Additional Benefits Duration:</label>
+        <label for="totalBenefitsDuration"><strong>Additional Benefits Duration:</strong></label>
         <input type="range" id="totalBenefitsDuration" min="1" max="48" step="1" value="1">
         <input type="number" id="totalBenefitsDurationValue" min="1" max="48" step="1" value="1"
                style="max-width: 80px;">
@@ -111,14 +174,14 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     </div>
 
     <div>
-        <label for="rewardCap">Maximum possible Reward Cap (per month):</label>
-        <input type="text" id="rewardCap" value="0" readonly>
+        <label for="rewardCap"><strong>Maximum possible Reward Cap (per month):</strong></label>
+        <input type="number" id="rewardCap" value="0" readonly>
         <span>€</span>
     </div>
 
     <h2>Needed Staking amount</h2>
     <div>
-        <label for="neededRspValue">Amount of needed RSP:</label>
+        <label for="neededRspValue"><strong>Amount of needed RSP:</strong></label>
         <input type="number" id="neededRspValue" value="0" readonly>
         <span>RSP</span>
     </div>
@@ -128,14 +191,16 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
     12 months: 110%
     18 months: 225%
     24 months: 250%">
-        <label for="stakingDuration">Staking Duration:</label>
+        <label for="stakingDuration"><strong>Staking Duration:</strong></label>
         <input type="range" id="stakingDuration" min="6" max="24" step="6" value="6">
         <span id="stakingDurationValue">6 months</span>
     </div>
 
+    <div style="margin-bottom: 20px;"></div>
+
     <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
-        <label for="stakedAmountValue">Required Euro staked:</label>
-        <input type="number" id="stakedAmountValue" value="0" style="max-width: 80px;" readonly>
+        <label for="stakedAmountValue"><strong>Required Euro staked:</strong></label>
+        <input type="number" id="stakedAmountValue" value="0" readonly>
         <span>€ (Euro Value staked in RNG equivalent)</span>
     </div>
 

@@ -124,33 +124,22 @@
             border-radius: 6px;
             border: 1px solid #ffd600;
             position: absolute;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 50%; /* Position vertically centered relative to the icon */
+            left: 110%; /* Position the tooltip to the right of the icon */
+            transform: translateY(-50%); /* Center tooltip vertically */
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
             opacity: 0; /* Start hidden */
             transition: opacity 0.3s ease, transform 0.3s ease;
             white-space: nowrap; /* Prevent line breaks */
-            overflow: hidden; /* Hide overflow in case the content exceeds the max width */
+            overflow: hidden; /* Hide overflow */
             font-weight: normal;
-            font-size: 14px; /* Change this value to adjust the font size */
+            font-size: 10px; /* Adjust font size if needed */
         }
 
         .info-icon:hover .tooltip {
             visibility: visible;
             opacity: 1;
-            transform: translateX(-50%) translateY(-10px); /* Adjust positioning when visible */
-        }
-
-        .tooltip::after {
-            content: "";
-            position: absolute;
-            bottom: 100%; /* Position the arrow above the tooltip */
-            left: 50%;
-            margin-left: -5px; /* Center the arrow */
-            border-width: 5px;
-            border-style: solid;
-            border-color: transparent transparent #ffd600 transparent; /* Arrow color matching tooltip border */
+            transform: translateY(-50%); /* Ensure tooltip remains centered vertically */
         }
 
         .tooltip table {

@@ -185,6 +185,9 @@
             <option value="pioneer">Pioneer Card</option>
             <option value="voyager">Voyager Card</option>
             <option value="vanguard">Vanguard Card</option>
+            <option value="blue">Blue Card</option>
+            <option value="sapphire">Sapphire Card</option>
+            <option value="cobalt">Cobalt Card</option>
             <option value="black">Black Card</option>
             <option value="carbon">Carbon Card</option>
             <option value="founder">Founders Card</option>
@@ -198,9 +201,12 @@
                         <tr><td>Pioneer Card</td><td>9,99€/month (4,99€ in RNG)</td><td>2.500€</td></tr>
                         <tr><td>Voyager Card</td><td>19,99€/month (14,99€ in RNG)</td><td>25.000€</td></tr>
                         <tr><td>Vanguard Card</td><td>29,99€/month (24,99€ in RNG)</td><td>35.000€</td></tr>
-                        <tr><td>Black Card</td><td>NFT</td><td>No Limit</td></tr>
-                        <tr><td>Carbon Card</td><td>NFT</td><td>No Limit</td></tr>
-                        <tr><td>Founders Card</td><td>NFT</td><td>No Limit</td></tr>
+                        <tr><td>Blue Card</td><td>499$ NFT</td><td>5.000€</td></tr>
+                        <tr><td>Sapphire Card</td><td>999$ NFT</td><td>10.000€</td></tr>
+                        <tr><td>Cobalt Card</td><td>1499$ NFT</td><td>15.000€</td></tr>
+                        <tr><td>Black Card</td><td>550...660$ NFT</td><td>No Limit</td></tr>
+                        <tr><td>Carbon Card</td><td>1100...1320$ NFT</td><td>No Limit</td></tr>
+                        <tr><td>Founders Card</td><td>1000...3500€ NFT</td><td>No Limit</td></tr>
                     </tbody>
                 </table>
             </span>
@@ -223,6 +229,9 @@
                         <tr><td>Pioneer Card</td><td>3% for 2500€</td><td>75€</td></tr>
                         <tr><td>Voyager Card</td><td>3% for 2500€</td><td>750€</td></tr>
                         <tr><td>Vanguard Card</td><td>3% for 2500€</td><td>1050€</td></tr>
+                        <tr><td>Blue Card</td><td>4% for 5000€</td><td>200€</td></tr>
+                        <tr><td>Sapphire Card</td><td>5% for 10.000€</td><td>500€</td></tr>
+                        <tr><td>Cobalt Card</td><td>6% for 15.000€</td><td>900€</td></tr>
                         <tr><td>Black Card</td><td>3% for unlimited</td><td>No Limit</td></tr>
                         <tr><td>Carbon Card</td><td>5% for unlimited</td><td>No Limit</td></tr>
                         <tr><td>Founders Card</td><td>8% for unlimited</td><td>No Limit</td></tr>
@@ -299,6 +308,9 @@
                         <tr><td>Pioneer Card</td><td>3% for 2500€</td><td>75€</td></tr>
                         <tr><td>Voyager Card</td><td>3% for 2500€</td><td>750€</td></tr>
                         <tr><td>Vanguard Card</td><td>3% for 2500€</td><td>1050€</td></tr>
+                        <tr><td>Blue Card</td><td>4% for 5000€</td><td>200€</td></tr>
+                        <tr><td>Sapphire Card</td><td>5% for 10.000€</td><td>500€</td></tr>
+                        <tr><td>Cobalt Card</td><td>6% for 15.000€</td><td>900€</td></tr>
                         <tr><td>Black Card</td><td>3% for unlimited</td><td>No Limit</td></tr>
                         <tr><td>Carbon Card</td><td>5% for unlimited</td><td>No Limit</td></tr>
                         <tr><td>Founders Card</td><td>8% for unlimited</td><td>No Limit</td></tr>
@@ -497,6 +509,12 @@
             startReward = 3;
         } else if (selectedCard === "vanguard") {
             startReward = 3;
+        } else if (selectedCard === "blue") {
+            startReward = 4;
+        } else if (selectedCard === "sapphire") {
+            startReward = 5;
+        } else if (selectedCard === "cobalt") {
+            startReward = 6;
         } else if (selectedCard === "black") {
             startReward = 3;
         } else if (selectedCard === "carbon") {
@@ -519,6 +537,12 @@
             startBenefits = 3;
         } else if (selectedCard === "vanguard") {
             startBenefits = 5;
+        } else if (selectedCard === "blue") {
+            startBenefits = 4;
+        } else if (selectedCard === "sapphire") {
+            startBenefits = 5;
+        } else if (selectedCard === "cobalt") {
+            startBenefits = 6;
         } else if (selectedCard === "black") {
             startBenefits = 4;
         } else if (selectedCard === "carbon") {
@@ -541,6 +565,12 @@
             spendLimit = 25000;
         } else if (selectedCard === "vanguard") {
             spendLimit = 35000;
+        } else if (selectedCard === "blue") {
+            spendLimit = 5000;
+        } else if (selectedCard === "sapphire") {
+            spendLimit = 10000;
+        } else if (selectedCard === "cobalt") {
+            spendLimit = 15000;
         } else if (selectedCard === "black") {
             spendLimit = undefined;
         } else if (selectedCard === "carbon") {

@@ -90,23 +90,95 @@
         .credits a:hover {
             text-decoration: underline;
         }
-    </style>
 
+        /* Info Icon and Tooltip Styles */
+        .info-icon {
+            cursor: pointer;
+            margin-left: 10px;
+            position: relative; /* Ensure the tooltip positions relative to the icon */
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: #ffd600;
+            color: black;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .info-icon:hover {
+            background-color: #ffeb3b; /* Slightly lighter yellow on hover */
+            transform: scale(1.1); /* Slight zoom effect on hover */
+        }
+
+        .tooltip {
+            visibility: hidden;
+            width: auto;
+            background-color: #512da8;
+            color: #ffffff;
+            text-align: left;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ffd600;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            opacity: 0; /* Start hidden */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            white-space: nowrap; /* Prevent line breaks */
+            overflow: hidden; /* Hide overflow in case the content exceeds the max width */
+            font-weight: normal;
+            font-size: 14px; /* Change this value to adjust the font size */
+        }
+
+        .info-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px); /* Adjust positioning when visible */
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            bottom: 100%; /* Position the arrow above the tooltip */
+            left: 50%;
+            margin-left: -5px; /* Center the arrow */
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #ffd600 transparent; /* Arrow color matching tooltip border */
+        }
+
+        .tooltip table {
+            width: 100%; /* Make the table take up the full width of the tooltip */
+            border-collapse: collapse; /* Remove gaps between table borders */
+        }
+
+        .tooltip th, .tooltip td {
+            padding: 5px;
+            text-align: left;
+            border-bottom: 1px solid #ffd600; /* Add a border below each row */
+        }
+
+        .tooltip th {
+            font-weight: bold;
+            background-color: #6842c2; /* Darker background for headers */
+        }
+
+    </style>
 </head>
+
 <body>
 <div class="container">
     <h1>RNG Card Customize Calculator</h1>
 
     <h2>Customize your card</h2>
 
-    <div title="Card prices:
-    Explorer Card: 0€/month, 300€ spending limit
-    Pioneer Card: 9,99€/month (4,99€ in RNG), 2.500€ spending limit
-    Voyager Card: 19,99€/month (14,99€ in RNG), 25.000€ spending limit
-    Vanguard Card: 29,99€/month (24,99€ in RNG), 35.000€ spending limit
-    Black Card: NFT, no spending limit
-    Carbon Card: NFT, no spending limit
-    Founders Card: NFT, no spending limit">
+    <div>
         <label for="cardSelector"><strong>Select Card type:</strong></label>
         <select id="cardSelector">
             <option value="explorer">Explorer Card</option>
@@ -117,30 +189,69 @@
             <option value="carbon">Carbon Card</option>
             <option value="founder">Founders Card</option>
         </select>
+        <span class="info-icon">&#9432;
+            <span class="tooltip">
+                <table>
+                    <thead><tr><th>Card Type</th><th>Price</th><th>Spending Limit</th></tr></thead>
+                    <tbody>
+                        <tr><td>Explorer Card</td><td>0€/month</td><td>300€</td></tr>
+                        <tr><td>Pioneer Card</td><td>9,99€/month (4,99€ in RNG)</td><td>2.500€</td></tr>
+                        <tr><td>Voyager Card</td><td>19,99€/month (14,99€ in RNG)</td><td>25.000€</td></tr>
+                        <tr><td>Vanguard Card</td><td>29,99€/month (24,99€ in RNG)</td><td>35.000€</td></tr>
+                        <tr><td>Black Card</td><td>NFT</td><td>No Limit</td></tr>
+                        <tr><td>Carbon Card</td><td>NFT</td><td>No Limit</td></tr>
+                        <tr><td>Founders Card</td><td>NFT</td><td>No Limit</td></tr>
+                    </tbody>
+                </table>
+            </span>
+        </span>
     </div>
 
-    <div title="The spend limit is the cap for which the 'Reward Percentage' is granted per month.
-Examples (only with 3% Reward% and default Spend Limit):
-Explorer with 3% for 300€ = 9€ Rewards Cap
-Pioneer with 3% for 2500€ = 75€ Rewards Cap
-Voyager with 3% for 25000€ = 750€ Rewards Cap
-Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
+    <div>
         <label for="spendLimit"><strong>Spend Limit:</strong></label>
         <input type="range" id="spendLimit" min="300" max="90000" step="100" value="300">
         <input type="number" id="spendLimitValue" min="300" max="90000" step="100" value="300" style="max-width: 80px;">
         <span id="spendLimitUnit">€</span>
+        <span class="info-icon">&#9432;
+            <span class="tooltip">
+                <table>
+                    The spend limit is the cap for which the 'Reward Percentage' is granted per month.<br/>
+                    Examples (only with 3% Reward% and default Spend Limit):<br/>
+                    <thead><tr><th>Card Type</th><th>Spend Limit</th><th>Reward Cap</th></tr></thead>
+                    <tbody>
+                        <tr><td>Explorer Card</td><td>3% for 300€</td><td>9€</td></tr>
+                        <tr><td>Pioneer Card</td><td>3% for 2500€</td><td>75€</td></tr>
+                        <tr><td>Voyager Card</td><td>3% for 2500€</td><td>750€</td></tr>
+                        <tr><td>Vanguard Card</td><td>3% for 2500€</td><td>1050€</td></tr>
+                        <tr><td>Black Card</td><td>3% for unlimited</td><td>No Limit</td></tr>
+                        <tr><td>Carbon Card</td><td>5% for unlimited</td><td>No Limit</td></tr>
+                        <tr><td>Founders Card</td><td>8% for unlimited</td><td>No Limit</td></tr>
+                    </tbody>
+                </table>
+            </span>
+        </span>
     </div>
 
-    <div title="The spend limit can be extended using RSP:
-300...60000€: 40 RSP/+100€
-60000...70000€: 80 RSP/+100€
-70000...80000€: 160 RSP/+100€
-80000...90000€: 320 RSP/+100€">
+    <div>
         <label for="spendLimitDuration"><strong>Spend Limit Duration:</strong></label>
         <input type="range" id="spendLimitDuration" min="6" max="48" step="6" value="6">
         <input type="number" id="spendLimitDurationValue" min="6" max="48" step="6" value="6"
                style="max-width: 80px;">
         <span>months</span>
+        <span class="info-icon">&#9432;
+            <span class="tooltip">
+                <table>
+                    The spend limit can be extended using RSP:<br/>
+                    <thead><tr><th>Spend Limit</th><th>Price per Step</th></tr></thead>
+                    <tbody>
+                        <tr><td>300...60000€</td><td>40 RSP/+100€</td></tr>
+                        <tr><td>60000...70000€</td><td>80 RSP/+100€</td></tr>
+                        <tr><td>70000...80000€</td><td>160 RSP/+100€</td></tr>
+                        <tr><td>80000...90000€</td><td>320 RSP/+100€</td></tr>
+                    </tbody>
+                </table>
+            </span>
+        </span>
     </div>
 
     <div>
@@ -177,6 +288,24 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         <label for="rewardCap"><strong>Maximum possible Reward Cap (per month):</strong></label>
         <input type="number" id="rewardCap" value="0" readonly>
         <span>€</span>
+        <span class="info-icon">&#9432;
+            <span class="tooltip">
+                <table>
+                    The spend limit is the cap for which the 'Reward Percentage' is granted per month.<br/>
+                    Examples (only with 3% Reward% and default Spend Limit):<br/>
+                    <thead><tr><th>Card Type</th><th>Spend Limit</th><th>Reward Cap</th></tr></thead>
+                    <tbody>
+                        <tr><td>Explorer Card</td><td>3% for 300€</td><td>9€</td></tr>
+                        <tr><td>Pioneer Card</td><td>3% for 2500€</td><td>75€</td></tr>
+                        <tr><td>Voyager Card</td><td>3% for 2500€</td><td>750€</td></tr>
+                        <tr><td>Vanguard Card</td><td>3% for 2500€</td><td>1050€</td></tr>
+                        <tr><td>Black Card</td><td>3% for unlimited</td><td>No Limit</td></tr>
+                        <tr><td>Carbon Card</td><td>5% for unlimited</td><td>No Limit</td></tr>
+                        <tr><td>Founders Card</td><td>8% for unlimited</td><td>No Limit</td></tr>
+                    </tbody>
+                </table>
+            </span>
+        </span>
     </div>
 
     <h2>Needed Staking amount</h2>
@@ -186,22 +315,36 @@ Vanguard with 3% for 35000€ = 1050€ Rewards Cap">
         <span>RSP</span>
     </div>
 
-    <div title="Bonus Staking duration:
-    6 months: 0%
-    12 months: 110%
-    18 months: 225%
-    24 months: 250%">
+    <div>
         <label for="stakingDuration"><strong>Staking Duration:</strong></label>
         <input type="range" id="stakingDuration" min="6" max="24" step="6" value="6">
         <span id="stakingDurationValue">6 months</span>
+        <span class="info-icon">&#9432;
+            <span class="tooltip">
+                <table>
+                    <thead><tr><th>Staking Duration</th><th>Bonus RSP</th></tr></thead>
+                    <tbody>
+                        <tr><td>6 months</td><td>0%</td></tr>
+                        <tr><td>12 months</td><td>110%</td></tr>
+                        <tr><td>18 months</td><td>225%</td></tr>
+                        <tr><td>24 months</td><td>250%</td></tr>
+                    </tbody>
+                </table>
+            </span>
+        </span>
     </div>
 
     <div style="margin-bottom: 20px;"></div>
 
-    <div title="1 RSP per € equivalent staked in RNG (without staking-duration bonus)">
+    <div>
         <label for="stakedAmountValue"><strong>Required Euro staked:</strong></label>
         <input type="number" id="stakedAmountValue" value="0" readonly>
         <span>€ (Euro Value staked in RNG equivalent)</span>
+        <span class="info-icon">&#9432;
+            <span class="tooltip">
+                1 RSP per 1€ equivalent staked in RNG (without staking-duration bonus)
+            </span>
+        </span>
     </div>
 
     <div>

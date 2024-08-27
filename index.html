@@ -221,9 +221,9 @@
                         <tr><td>Blue Card</td><td>4% for 5.000€</td><td>200€</td></tr>
                         <tr><td>Sapphire Card</td><td>5% for 10.000€</td><td>500€</td></tr>
                         <tr><td>Cobalt Card</td><td>6% for 15.000€</td><td>900€</td></tr>
-                        <tr><td>Black Card</td><td>3% for unlimited</td><td>No Limit (600€ with current card limit)</td></tr>
-                        <tr><td>Carbon Card</td><td>5% for unlimited</td><td>No Limit (1000€ with current card limit)</td></tr>
-                        <tr><td>Founders Card</td><td>8% for unlimited</td><td>No Limit (1600€ with current card limit)</td></tr>
+                        <tr><td>Black Card</td><td>4% for unlimited</td><td>No Limit (600€ with current card limit)</td></tr>
+                        <tr><td>Carbon Card</td><td>6% for unlimited</td><td>No Limit (1000€ with current card limit)</td></tr>
+                        <tr><td>Founders Card</td><td>9% for unlimited</td><td>No Limit (1600€ with current card limit)</td></tr>
                     </tbody>
                 </table>
             </span>
@@ -290,7 +290,7 @@
             <span class="tooltip">
                 <table>
                     The spend limit is the cap for which the 'Reward Percentage' is granted per month.<br/>
-                    Examples (only with 3% Reward% and default Spend Limit):<br/>
+                    Examples (only with default Reward% and default Spend Limit):<br/>
                     <thead><tr><th>Card Type</th><th>Spend Limit</th><th>Reward Cap</th></tr></thead>
                     <tbody>
                         <tr><td>Explorer Card</td><td>3% for 300€</td><td>9€</td></tr>
@@ -300,9 +300,9 @@
                         <tr><td>Blue Card</td><td>4% for 5.000€</td><td>200€</td></tr>
                         <tr><td>Sapphire Card</td><td>5% for 10.000€</td><td>500€</td></tr>
                         <tr><td>Cobalt Card</td><td>6% for 15.000€</td><td>900€</td></tr>
-                        <tr><td>Black Card</td><td>3% for unlimited</td><td>No Limit (600€ with current card limit)</td></tr>
-                        <tr><td>Carbon Card</td><td>5% for unlimited</td><td>No Limit (1000€ with current card limit)</td></tr>
-                        <tr><td>Founders Card</td><td>8% for unlimited</td><td>No Limit (1600€ with current card limit)</td></tr>
+                        <tr><td>Black Card</td><td>4% for unlimited</td><td>No Limit (600€ with current card limit)</td></tr>
+                        <tr><td>Carbon Card</td><td>6% for unlimited</td><td>No Limit (1000€ with current card limit)</td></tr>
+                        <tr><td>Founders Card</td><td>9% for unlimited</td><td>No Limit (1600€ with current card limit)</td></tr>
                     </tbody>
                 </table>
             </span>
@@ -343,7 +343,16 @@
         <span>€ (Euro Value staked in RNG equivalent)</span>
         <span class="info-icon">&#9432;
             <span class="tooltip">
-                1 RSP per 1€ equivalent staked in RNG (without staking-duration bonus)
+                There is 1 RSP granted per 1€ staked in RNG (without staking-duration bonus)<br/>
+                <table>
+                    <thead><tr><th>Staking Duration</th><th>Bonus RSP</th><th>RSP per Euro</th></tr></thead>
+                    <tbody>
+                        <tr><td>6 months</td><td>0%</td><td>1 RSP/€</td></tr>
+                        <tr><td>12 months</td><td>110%</td><td>2,1 RSP/€</td></tr>
+                        <tr><td>18 months</td><td>225%</td><td>3,25 RSP/€</td></tr>
+                        <tr><td>24 months</td><td>250%</td><td>3,5 RSP/€</td></tr>
+                    </tbody>
+                </table>
             </span>
         </span>
     </div>
@@ -505,11 +514,11 @@
         } else if (selectedCard === "cobalt") {
             startReward = 6;
         } else if (selectedCard === "black") {
-            startReward = 3;
+            startReward = 4;
         } else if (selectedCard === "carbon") {
-            startReward = 5;
+            startReward = 6;
         } else if (selectedCard === "founder") {
-            startReward = 8;
+            startReward = 9;
         } else {
             alert("Error: invalid card selected: " + selectedCard);
         }
@@ -533,7 +542,7 @@
         } else if (selectedCard === "cobalt") {
             startBenefits = 6;
         } else if (selectedCard === "black") {
-            startBenefits = 4;
+            startBenefits = 5;
         } else if (selectedCard === "carbon") {
             startBenefits = 6;
         } else if (selectedCard === "founder") {

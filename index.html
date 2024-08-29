@@ -810,12 +810,18 @@
     function calculateRewardCap() {
         const rewardPercentage = parseFloat(document.getElementById("rewardPercentage").value);
         const spendLimit = parseFloat(document.getElementById("spendLimit").value);
+        const cardLimit = 20000; // currently there is a card limit of 20000€/month (by Intergiro/Visa)
         const totalBenefits = parseFloat(document.getElementById("totalBenefits").value);
 
         const selectedCard = document.getElementById("cardSelector").value;
         const minSpendLimit = getSpendLimit(selectedCard);
         if (minSpendLimit === undefined) {
-            document.getElementById("rewardCap").value = "unlimited";
+            // In case there is no real limit -> use the card limit (for Black/Carbon/FE)
+            let rewardCap = (cardLimit * rewardPercentage / 100) + totalBenefits * 10;
+            rewardCap = Math.round(rewardCap * 10) / 10;
+            document.getElementById("rewardCap").value = rewardCap;
+            // FIXME: once the FE cards are launched use the following
+            // document.getElementById("rewardCap").value = "unlimited";
         } else {
             let rewardCap = (spendLimit * rewardPercentage / 100) + totalBenefits * 10;
             rewardCap = Math.round(rewardCap * 10) / 10;
